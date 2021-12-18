@@ -1,0 +1,51 @@
+create table Estudio (
+	idEstudio serial not null primary key,
+	nome varchar(30) not null
+);
+
+create table genero (
+	idGenero serial not null primary key,
+	nome varchar(30) not null
+)
+
+CREATE TABLE Jogo (
+  idJogo serial  NOT NULL ,
+  Nome VARCHAR(30)   NOT NULL ,
+  DataCompra DATE NOT NULL ,
+  PrecoCompra DECIMAL NOT NULL ,
+  idEstudio INTEGER,
+FOREIGN KEY(idEstudio) references Estudio(idEstudio) on delete set null,
+PRIMARY KEY(idJogo));
+
+create table jogoGenero (
+	idJogo Integer references Jogo(idJogo) on delete cascade,
+	idGenero Integer references Genero(idGenero) on delete cascade,
+	primary key (idJogo, idGenero)
+)
+
+
+insert into genero(nome) values ('luta');
+insert into genero(nome) values ('anime');
+insert into genero(nome) values ('rpg');
+insert into genero(nome) values ('roguelike');
+
+select * from genero
+
+alter table genero
+add constraint unique_nome_genero UNIQUE(nome)
+
+insert into estudio(nome) values ('ArcSystem Works');
+insert into estudio(nome) values ('French Bread');
+insert into estudio(nome) values ('Supergiant Games');
+insert into estudio(nome) values ('From Software');
+
+alter table estudio
+add constraint unique_nome_estudio UNIQUE(nome)
+
+select * from estudio
+
+
+insert into jogo(nome, datacompra, precocompra, idestudio) values ('Guilty Gear -Strive-', '2021-11-15', 120, 1);
+insert into jogo(nome, datacompra, precocompra, idestudio) values ('Hades', '2021-12-18', 33.50, 3);
+
+select * from jogo
