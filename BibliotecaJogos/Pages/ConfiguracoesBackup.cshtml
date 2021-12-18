@@ -1,0 +1,134 @@
+﻿@page
+@model BibliotecaJogos.Pages.ConfiguracoesModel
+@{
+}
+<div class="text-center">
+    @{
+        if(ViewData["status_update"] != null)
+        {
+
+            string[] status = ViewData["status_update"].ToString().Split('-');
+            if(status[0].Trim().Equals("0"))
+            {
+                <p class="alert alert-success">@status[1].Trim()</p>
+            } else
+            {
+                <p class="alert alert-danger">@status[1].Trim()</p>
+            }
+        }
+    }
+    <h1 class="display-4">Configurações</h1>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col table-wrapper">
+      <table class="table table-borderless table-config text-center">
+        <thead id="theadEstudio">
+            <tr>
+                <th>Estúdios</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyEstudio" style="display:none">
+            @{
+                foreach(var estudio in @Model.estudioList)
+                {
+                    <tr>
+                        <td><button class="btn btn-outline-danger col-12 btn-config"
+                                        type="submit"
+                                        asp-page-handler="DeleteEstudio" 
+                                        asp-route-id="@estudio.idEstudio"
+                                        onclick="return confirm('Deseja deletar @estudio.nome da sua biblioteca?')"> @estudio.nome  </button></td>
+                    </tr>    
+                }
+            }
+        </tbody>
+      </table>
+    </div>
+    <div class="col-1">
+    </div>
+    <div class="col table-wrapper">
+      <table class="table table-borderless table-config text-center">
+          <thead id="theadGenero">
+              <tr>
+                  <th>Gêneros</th>
+              </tr>
+          </thead>
+          <tbody id="tbodyGenero" style="display:none">
+              @{
+                    foreach(var genero in @Model.generoList)
+                    {
+                        <tr>
+                            <td><button class="btn btn-outline-danger col-12 btn-config" 
+                                        type="submit"
+                                        asp-page-handler="DeleteGenero" 
+                                        asp-route-id="@genero.id"
+                                        onclick="return confirm('Deseja deletar @genero.nome da sua biblioteca?')">@genero.nome</button>
+                            </td>
+                        </tr>    
+                    }
+                }
+          </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+        <form method="post">
+            <div class="col-12">
+                <div class="row">
+                    <label for="inputNomeEstudio" class="form-label">Estúdio: </label>
+                    <input type="text" class="form-control" id="inputNomeEstudio" asp-for="@Model.estudio.nome">
+                    <span asp-validation-for="@Model.estudio.nome" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="row">
+                    <button type="submit" asp-page-handler="AdicionarEstudio" class="btn btn-primary col-12">Adicionar Estúdio</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-1">
+    </div>
+    <div class="col">
+        <form method="post">
+            <div class="col-12">
+                <div class="row">
+                    <label for="inputNomeGenero" class="form-label">Gênero</label>
+                    <input type="text" class="form-control" id="inputNomeGenero" asp-for="@Model.genero.nome">
+                    <span asp-validation-for="@Model.genero.nome" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="row">
+                    <button type="submit" asp-page-handler="AdicionarGenero" class="btn btn-primary col-12">Adicionar Gênero</button>
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const thEstudio = document.querySelector("#theadEstudio");
+        const tbEstudio = document.querySelector("#tbodyEstudio");
+
+        thEstudio.addEventListener("click", (event) => {
+            if(tbEstudio.style.display === 'none') {
+                tbEstudio.style.display = ''
+            } else {
+                tbEstudio.style.display = 'none'
+            }
+        });
+
+        const thGenero = document.querySelector("#theadGenero");
+        const tbGenero = document.querySelector("#tbodyGenero");
+
+        thGenero.addEventListener("click", (event) => {
+            if(tbGenero.style.display === 'none') {
+                tbGenero.style.display = ''
+            } else {
+                tbGenero.style.display = 'none'
+            }
+        });
+    </script>
+}

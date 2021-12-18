@@ -1,0 +1,63 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    @{
+        if(ViewData["status"] != null)
+        {
+            <p class="alert alert-success">@ViewData["status"].ToString()</p>        
+        }
+    }
+    <h1 class="display-4">Biblioteca</h1>
+</div>
+<div>
+    <form method="post">
+        <table class="table table-striped text-center">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Estúdio</th>
+                    <th>Preço de Compra</th>
+                    <th>Data de Compra</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var jogo in Model.listaJogos)
+                {
+                    <tr>
+                        <td>@jogo.nome</td>
+                        <td>
+                            @Model.listaEstudios.Find(x => x.idEstudio == jogo.idEstudio)?.nome
+                        </td>
+                        <td>@jogo.precoCompra</td>
+                        <td>@jogo.dataCompra.Date.ToShortDateString()</td>
+                        <td>
+                            <div class="btn-group col-12">
+                                <div class="col-6">
+                                    <a class="btn btn-primary col-12" 
+                                        asp-page="/Edit" 
+                                        asp-route-id="@jogo.idJogo">Editar</a> 
+                                </div>
+                                <div class="col-6">
+                                   <button class="btn btn-danger col-12" 
+                                        type="submit"
+                                        asp-page-handler="Delete" 
+                                        asp-route-id="@jogo.idJogo"
+                                        onclick="return confirm('Deseja deletar @jogo.nome da sua biblioteca?')">Deletar</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary col-6" 
+            asp-page="/Insert">Inserir</a> 
+    </div>
+</div>

@@ -1,0 +1,62 @@
+﻿@page
+@model BibliotecaJogos.Pages.InsertModel
+@{
+}
+<div class="text-center">
+    @{
+        if(ViewData["erro_insert"] != null)
+        {
+            <p class="alert alert-danger">@ViewData["erro_insert"].ToString()</p>        
+        }
+    }
+    <h1 class="display-4">Inserir</h1>
+</div>
+<form class="row g-3" method="post">
+    <div class="col-12">
+        <label for="inputTitulo" class="form-label">Título</label>
+        <input type="text" class="form-control" id="inputTitulo" asp-for="@Model.jogo.nome">
+        <span asp-validation-for="@Model.jogo.nome" class="text-danger" ></span>
+    </div>
+    <div class="col-md-6">
+        <label for="inputPreco" class="form-label">Preço</label>
+        <input type="text" class="form-control" id="inputPreco" asp-for="@Model.jogo.precoCompra">
+    </div>
+    <div class="col-md-6">
+        <label for="inputData" class="form-label">Data de Aquisição</label>
+        <input type="date" class="form-control" id="inputData" asp-for="@Model.jogo.dataCompra">
+        <span asp-validation-for="@Model.jogo.dataCompra" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <label for="selectEstudio" class="form-label">Genero</label>
+        <select id="selectEstudio" class="form-control col-md-12" asp-items=@Model.selectEstudio asp-for=@Model.jogo.idEstudio>
+          <option selected value="">Selecione o Estúdio</option>
+        </select>
+        <span asp-validation-for="@Model.jogo.idEstudio" class="text-danger"></span>
+    </div>
+    <div class="form-check-inline col-12" style="margin-top:1rem; margin-bottom:1rem">
+        <div class="form-check">
+            @{
+                foreach(var genero in @Model.generoList)
+                {
+                    <input class="form-check-input" 
+                            name=generosChecked 
+                            type="checkbox" 
+                            id=@genero.nome 
+                            value=@genero.id>
+                    <label class="form-check-label" for=@genero.nome>@genero.nome</label>       
+                }
+            }
+        </div>    
+    </div>
+    <div class=" btn-group col-12">
+        <div class="col-6">
+            <a asp-page="/index" class="btn btn-danger col-12">Voltar</a>
+        </div>
+        <div class="col-6">
+            <button type="submit" asp-page-handler="Inserir" class="btn btn-primary col-12">Inserir</button>
+        </div>
+    </div>
+</form>
+@*    @section scripts{
+       <partial name="_ValidationScriptsPartial" />
+    }*@

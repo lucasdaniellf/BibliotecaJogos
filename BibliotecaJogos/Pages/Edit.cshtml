@@ -1,0 +1,74 @@
+﻿@page "{id:int}"
+@model BibliotecaJogos.Pages.EditModel
+@{
+}
+<div class="text-center">
+    @{
+        if(ViewData["status_update"] != null)
+        {
+
+            string[] status = ViewData["status_update"].ToString().Split('-');
+            if(status[0].Trim().Equals("0"))
+            {
+                <p class="alert alert-success">@status[1].Trim()</p>
+            } else
+            {
+                <p class="alert alert-danger">@status[1].Trim()</p>
+            }
+        }
+    }
+    <h1 class="display-4">Editar</h1>
+</div>
+<form class="row g-3" method="post">
+    <div class="col-12">
+        <input hidden class="form-control" id="inputId" asp-for="@Model.jogo.idJogo">
+    </div>
+    <div class="col-12">
+        <label for="inputTitulo" class="form-label">Título</label>
+        <input type="text" class="form-control" id="inputTitulo" asp-for="@Model.jogo.nome">
+        <span asp-validation-for="@Model.jogo.nome" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label for="inputPreco" class="form-label">Preço</label>
+        <input type="text" class="form-control" id="inputPreco" asp-for="@Model.jogo.precoCompra">
+    </div>
+    <div class="col-md-6">
+        <label for="inputData" class="form-label">Data de Aquisição</label>
+        <input type="date" class="form-control" id="inputData" asp-for="@Model.jogo.dataCompra">
+        <span asp-validation-for="@Model.jogo.dataCompra" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <label for="selectEstudio" class="form-label">Estúdio</label>
+        <select id="selectEstudio" class="form-control col-md-12" asp-items=@Model.selectEstudio asp-for=@Model.jogo.idEstudio>
+          <option selected value="">Selecione o Estúdio</option>
+        </select>
+        <span asp-validation-for="@Model.jogo.idEstudio" class="text-danger"></span>
+    </div>
+    <div class="form-check-inline col-12" style="margin-top:1rem; margin-bottom:1rem">
+            @{
+                foreach(var genero in @Model.generoList)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" 
+                               name=generosChecked 
+                               type="checkbox" 
+                               id=@genero.nome 
+                               value=@genero.id
+                               checked=@Model.jogoGeneroList.Find(x => x.idGenero == @genero.id)>
+                        <label class="form-check-label" for=@genero.nome>@genero.nome</label>       
+                    </div>    
+                }
+            }
+    </div>
+    <div class="btn-group col-12">
+        <div class="col-6">
+            <a asp-page="/index" class="btn btn-danger col-12">Voltar</a>
+        </div>
+        <div class="col-6">
+            <button type="submit" asp-page-handler="Editar" class="btn btn-primary col-12">Editar</button>
+        </div>
+    </div>
+</form>
+@*@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}*@
